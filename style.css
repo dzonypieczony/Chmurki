@@ -1,18 +1,72 @@
 body{
-    background-image: url("chmurki.jpg");
+    display: flex;
+    flex-direction: column;
+    background-color: #8fe0ff;
     font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
 }
 header{
-    padding: 20px;
     text-align: center;
-    color: black;
-    background-color: lightblue;
+    color: white;
+    background-color: #31255a;
+    align-self: center;
+    width: 100%;
+    margin-top: 0;
+}
+#pogoda{
+    display: grid;
+    grid-template-columns: 5fr 2fr;
+    margin-bottom: 30px;
+}
+#pogoda2{
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr 2fr 2fr 2fr 2fr;
+    text-align: center;
+}
+.miasto{
+    padding: 50px;
+    background-color: whitesmoke;
+    height: 2em;
+}
+#miasto1{
+    grid-column-start: 2;
+}
+#miasto2{
+    grid-column-start: 4;
+}
+#miasto3{
+    grid-column-start: 6;
+}
+#label_for_pole{
+    text-align: center;
+    padding: 20px;
+    background-color: #75b4e3;
+    align-self: center;
+    width:50%;
+    font-size: large;
+    color: white;
+}
+#pole{
+    padding: 10px;
+    grid-column-start: 1;
+    align-self: center;
+}
+#button_for_pole{
+    grid-column-start: 2;
+    background-color: #54416d;
+    border-radius: 10px;
+    color: white;
+
+}
+#button_for_pole:hover{
+    background-color: #75b4e3;
+    font-weight: bold;
+
 }
 footer{
     font-size: large;
-    background-color:lightyellow;
+    background-color:#31255a;
     text-align: center;
-    border: lightyellow;
     position: absolute;
     bottom: 0px;
 }

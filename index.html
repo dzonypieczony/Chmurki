@@ -7,15 +7,22 @@
 </head>
 <body>
 <header>
-    <h1><b>Pogoda na każdy dzień</b></h1>
+    <h1>Pogoda na każdy dzień</h1>
 </header>
-<article>
-    <ul>
-        <li><a href="bialystok.html">Białystok</a></li>
-        <li><a href="warszawa.html">Warszawa</a></li>
-        <li><a href="grajewo.html">Grajewo</a></li>
-    </ul>
-</article>
+
+<label for="pole" id="label_for_pole">Wpisz nazwę miasta</label>
+<div id="pogoda">
+<input type="text" name="pole" id="pole" width="200px">
+<button type="button" id="button_for_pole">Wybierz</button>
+</div>
+<div id="pogoda2">
+    <article id="miasto1" class="miasto">Warszawa</article>
+    <article id="miasto2" class="miasto">Białystok</article>
+    <article id="miasto3" class="miasto">Pruszków</article>
+</div>
+
+
+
 <footer>Przekaż 1,5% podatku na fundację <b>Pogoda dla każdego</b></footer>
 
 </body>
