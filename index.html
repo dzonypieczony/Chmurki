@@ -1,29 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl-PL">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Title</title>
+    <title>Pogoda na każdy dzień</title>
 </head>
 <body>
-<header>
-    <h1>Pogoda na każdy dzień</h1>
-</header>
-
-<label for="pole" id="label_for_pole">Wpisz nazwę miasta</label>
-<div id="pogoda">
-<input type="text" name="pole" id="pole" width="200px">
-<button type="button" id="button_for_pole">Wybierz</button>
-</div>
-<div id="pogoda2">
-    <article id="miasto1" class="miasto">Warszawa</article>
-    <article id="miasto2" class="miasto">Białystok</article>
-    <article id="miasto3" class="miasto">Pruszków</article>
-</div>
-
-
-
-<footer>Przekaż 1,5% podatku na fundację <b>Pogoda dla każdego</b></footer>
-
+    <div class="strona">
+        <header>
+            <h1>Pogoda na każdy dzień</h1>
+        </header>
+        <div class="glowna_zawartosc">
+            <div id="wyszukiwanie_miasta">
+                <input type="text" id="wyszukiwanie_pole">
+                <button type="button" id="wyszukiwanie_przycisk">Wybierz</button>
+            </div>
+            <div class="miejscowosci">
+                <article class="miasto">
+                    <a href="warszawa.html">Warszawa</a>
+                </article>
+                <article class="miasto">
+                    <a href="bialystok.html">Białystok</a>
+                </article>
+                <article class="miasto">
+                    <a href="grajewo.html">Grajewo</a>
+                </article>
+                <article class="miasto">
+                    <a href="gdansk.html">Gdańsk</a>
+                </article>
+                <article class="miasto">
+                    <a href="gdynia.html">Gdynia</a>
+                </article>
+                <article class="miasto">
+                    <a href="sopot.html">Sopot</a>
+                </article>
+                <article class="miasto">
+                    <a href="siemieniakowszczyzna.html">Siemieniakowszczyznaaaaaaaaaaaaaaa</a>
+                </article>
+                <article class="miasto">
+                    <a href="wolka sokolowska kolo wolki niedzwiedzkiej.html">Wólka Sokołowska koło Wólki Niedźwiedzkiej</a>
+                </article>
+            </div>
+        </div>
+        <footer>Przekaż 1,5% podatku na fundację <b>Pogoda dla każdego</b></footer>
+    </div>
 </body>
 </html>

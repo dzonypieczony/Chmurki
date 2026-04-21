@@ -1,18 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl-PL">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Title</title>
+    <title>Pogoda na każdy dzień - Warszawa</title>
 </head>
 <body>
-<header>
-    <h1><b>Pogoda w w*****wie</b></h1>
-</header>
-<article>
-<h2 class="spin-text">W w*****wie jest źle jak zawsze</h2>
-</article>
-<h3><a href="index.html">Wróć na stronę główną</a></h3>
-<footer>Przekaż 1,5% podatku na fundację <b>Pogoda dla każdego</b></footer>
+    <div class="strona">
+        <header>
+            <div class="naglowek_miasta">
+                <h3 class="powrot">
+                    <a href="index.html">
+                        <p>Wróć na stronę główną</p>
+                        <img src="misc/arrow-narrow-left.svg">
+                    </a>
+                </h3>
+                <h1>Pogoda: Warszawa</h1>
+            </div>
+        </header>
+        <div class="glowna_zawartosc">
+            <div class="miasto_zawartosc">
+                <article class="element_pogody">
+                    <h2>Temperatura:</h2>
+                    <img src="temperatura/thermometer-warmer.svg">
+                    <p>30°C</p>
+                </article>
+                <article class="element_pogody">
+                    <h2>Wiatr:</h2>
+                    <img src="wiatr/wind.svg">
+                    <p>20km/h</p>
+                </article>
+                <article class="element_pogody">
+                    <h2>Zachmurzenie i opady:</h2>
+                    <img src="zachmurzenie_opady/clear-day.svg">
+                    <p>Pogodnie</p>
+                </article>
+                <article class="element_pogody">
+                    <h2>Ciśnienie:</h2>
+                    <img src="cisnienie/pressure-low.svg">
+                    <p>1012hPa</p>
+                </article>
+            </div>
+        </div>
+        <footer>Przekaż 1,5% podatku na fundację <b>Pogoda dla każdego</b></footer>
+    </div>
 </body>
-</html>
