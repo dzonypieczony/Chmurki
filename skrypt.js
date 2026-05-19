@@ -75,7 +75,7 @@ function szukaj() {
 async function pobierzPogode(miasto) {
 
     const url =
-        `https://api.open-meteo.com/v1/forecast?latitude=${miasto.Latitude}&longitude=${miasto.Longitude}&current=relative_humidity_2m,temperature_2m,wind_speed_10m,pressure_msl`
+        `https://api.open-meteo.com/v1/forecast?latitude=${miasto.Latitude}&longitude=${miasto.Longitude}&current=relative_humidity_2m,temperature_2m,wind_speed_10m,surface_pressure`
 
     const res = await fetch(url)
     const pogoda = await res.json()
@@ -90,11 +90,18 @@ function pokaz(miasto, pogoda) {
 
     const kontener = document.createElement('div')
     kontener.classList.add('miasto_zawartosc')
-
-    kontener.appendChild(card('Temperatura', 'temperatura/thermometer-colder.svg', pogoda.current.temperature_2m + '°C'))
+    if (pogoda.current.temperature_2m<=5){
+        kontener.appendChild(card('Temperatura', 'temperatura/thermometer-colder.svg', pogoda.current.temperature_2m + '°C'))
+    }
+    else if(pogoda.current.temperature_2m<20) {
+        kontener.appendChild(card('Temperatura', 'temperatura/thermometer.svg', pogoda.current.temperature_2m + '°C'))
+    }
+    else if(pogoda.current.temperature_2m>=20){
+            kontener.appendChild(card('Temperatura', 'temperatura/thermometer-warmer.svg', pogoda.current.temperature_2m + '°C'))
+        }
     kontener.appendChild(card('Wilgotność', 'zachmurzenie_opady/cloudy.svg', pogoda.current.relative_humidity_2m + '%'))
     kontener.appendChild(card('Wiatr', 'wiatr/wind.svg', pogoda.current.wind_speed_10m + ' km/h'))
-    kontener.appendChild(card('Ciśnienie', 'cisnienie/pressure-high.svg', pogoda.current.pressure_msl + ' hPa'))
+    kontener.appendChild(card('Ciśnienie', 'cisnienie/pressure-high.svg', pogoda.surface_pressure + ' hPa'))
 
     wynik.appendChild(kontener)
 }
