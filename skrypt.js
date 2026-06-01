@@ -1,9 +1,10 @@
 const body = document.body
-let daneMiast = []
+let daneMiast = [] // Branie danych miast do podpowiadania
 fetch('miasta.json')
     .then(r => r.json())
     .then(dane => daneMiast = dane)
     .then(() => renderUI())
+
 function renderUI() {
     const strona = document.createElement('div')
     strona.classList.add('strona')
@@ -32,9 +33,7 @@ function renderUI() {
 // Podpowiadanie do wyszukiwania
     const datalist = document.createElement('datalist')
     datalist.id = 'miasta'
-
     input.setAttribute('list', 'miasta')
-    search.appendChild(datalist)
 
 
     const button = document.createElement('button')
@@ -65,37 +64,38 @@ function renderUI() {
 // Podpowiadanie do wyszukiwania
     input.addEventListener("input", () => {
         const tekst = input.value.toLowerCase()
-
-        datalist.innerHTML = ""
-
-        if (tekst.length < 2) return
-
-        daneMiast
-            .filter(m => m.Name.toLowerCase().includes(tekst))
+        if (tekst.length < 2) {
+            datalist.innerHTML = ""
+            return
+        }
+        const wyniki = daneMiast
+            .filter(m => m.Name.toLowerCase().startsWith(tekst))
             .slice(0, 10)
-            .forEach(m => {
-                const option = document.createElement("option")
-                option.value = m.Name
-                datalist.appendChild(option)
-            })
+        datalist.innerHTML = ""
+        wyniki.forEach(m => {
+            const option = document.createElement("option")
+            option.value = m.Name
+            datalist.appendChild(option)
+        })
     })
-}
-
-
-
-// async function pobierzPogode(miasto) {
-//
-//     const url =
-//         `https://api.open-meteo.com/v1/forecast?latitude=${miasto.Latitude}&longitude=${miasto.Longitude}&current=relative_humidity_2m,temperature_2m,wind_speed_10m,surface_pressure`
-//
-//     const res = await fetch(url)
-//     const pogoda = await res.json()
-//
-//     pokaz(miasto, pogoda)
-// }
+    }
 function szukaj() {
     const query = document.getElementById("wyszukiwanie_pole").value;
     pobierzPogode(query);
+}
+function Wiatr(v) { //logika wiatru, temperatury  - obrazki - itd
+    if (v < 20) return 'wiatr/wind.svg'
+    return 'wiatr/wind-alert.svg'
+}
+function Temperatura(temp){
+    if (temp < 5) return 'temperatura/thermometer-colder.svg'
+    if (temp < 20) return 'temperatura/thermometer.svg'
+    return 'temperatura/thermometer-warmer.svg'
+}
+function Cisnienie(pressure){
+    if (pressure < 1000) return 'cisnienie/pressure-low.svg'
+    if (pressure < 1020) return 'cisnienie/star.svg'
+    return 'cisnienie/pressure-high.svg'
 }
 
 function pokaz(miasto, pogoda) {
@@ -105,18 +105,14 @@ function pokaz(miasto, pogoda) {
 
     const kontener = document.createElement('div')
     kontener.classList.add('miasto_zawartosc')
-    if (pogoda.current.temperature_2m<=5){
-        kontener.appendChild(card('Temperatura', 'temperatura/thermometer-colder.svg', pogoda.current.temperature_2m + '°C'))
-    }
-    else if(pogoda.current.temperature_2m<20) {
-        kontener.appendChild(card('Temperatura', 'temperatura/thermometer.svg', pogoda.current.temperature_2m + '°C'))
-    }
-    else if(pogoda.current.temperature_2m>=20){
-            kontener.appendChild(card('Temperatura', 'temperatura/thermometer-warmer.svg', pogoda.current.temperature_2m + '°C'))
-        }
-    kontener.appendChild(card('Wilgotność', 'zachmurzenie_opady/cloudy.svg', pogoda.current.relative_humidity_2m + '%'))
-    kontener.appendChild(card('Wiatr', 'wiatr/wind.svg', pogoda.current.wind_speed_10m + ' km/h'))
-    kontener.appendChild(card('Ciśnienie', 'cisnienie/pressure-high.svg', pogoda.surface_pressure + ' hPa'))
+
+    kontener.appendChild(card('Temperatura', Temperatura(pogoda.current.temperature_2m), pogoda.current.temperature_2m + '°C'))
+    kontener.appendChild(card('Opis Pogody', 'zachmurzenie_opady/cloudy.svg', pogoda.current.relative_humidity_2m + '%'))
+
+    kontener.appendChild(card('Wiatr', Wiatr(pogoda.current.wind_speed_10m), pogoda.current.wind_speed_10m + ' km/h'))
+    kontener.appendChild(card('Ciśnienie', Cisnienie(pogoda.current.surface_pressure), pogoda.current.surface_pressure + ' hPa'))
+
+
 
     wynik.appendChild(kontener)
 }
@@ -133,7 +129,7 @@ async function pobierzPogode(query) {
 
     const miasto = geoData.results[0];
     const weatherUrl =
-        `https://api.open-meteo.com/v1/forecast?latitude=${miasto.latitude}&longitude=${miasto.longitude}&current=relative_humidity_2m,temperature_2m,wind_speed_10m,surface_pressure`;
+        `https://api.open-meteo.com/v1/forecast?latitude=${miasto.latitude}&longitude=${miasto.longitude}&current=temperature_2m,wind_speed_10m,surface_pressure`;
 
     const weatherRes = await fetch(weatherUrl);
     const pogoda = await weatherRes.json();
