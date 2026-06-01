@@ -55,32 +55,21 @@ function renderUI() {
         .addEventListener('click', szukaj)
 }
 
+
+
+// async function pobierzPogode(miasto) {
+//
+//     const url =
+//         `https://api.open-meteo.com/v1/forecast?latitude=${miasto.Latitude}&longitude=${miasto.Longitude}&current=relative_humidity_2m,temperature_2m,wind_speed_10m,surface_pressure`
+//
+//     const res = await fetch(url)
+//     const pogoda = await res.json()
+//
+//     pokaz(miasto, pogoda)
+// }
 function szukaj() {
-
-    const wpis = document
-        .getElementById('wyszukiwanie_pole')
-        .value
-        .trim()
-        .toLowerCase()
-
-    if (!wpis) return alert('Wpisz miejscowość')
-
-    const miasto = daneMiast.find(m => m.Name.toLowerCase() === wpis)
-
-    if (!miasto) return alert('Nie znaleziono miejscowości')
-
-    pobierzPogode(miasto)
-}
-
-async function pobierzPogode(miasto) {
-
-    const url =
-        `https://api.open-meteo.com/v1/forecast?latitude=${miasto.Latitude}&longitude=${miasto.Longitude}&current=relative_humidity_2m,temperature_2m,wind_speed_10m,surface_pressure`
-
-    const res = await fetch(url)
-    const pogoda = await res.json()
-
-    pokaz(miasto, pogoda)
+    const query = document.getElementById("wyszukiwanie_pole").value;
+    pobierzPogode(query);
 }
 
 function pokaz(miasto, pogoda) {
@@ -104,6 +93,26 @@ function pokaz(miasto, pogoda) {
     kontener.appendChild(card('Ciśnienie', 'cisnienie/pressure-high.svg', pogoda.surface_pressure + ' hPa'))
 
     wynik.appendChild(kontener)
+}
+
+async function pobierzPogode(query) {
+    const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=1&language=pl&format=json`;
+    const geoRes = await fetch(geoUrl);
+    const geoData = await geoRes.json();
+
+    if (!geoData.results || geoData.results.length === 0) {
+        console.log("Nie znaleziono miasta");
+        return;
+    }
+
+    const miasto = geoData.results[0];
+    const weatherUrl =
+        `https://api.open-meteo.com/v1/forecast?latitude=${miasto.latitude}&longitude=${miasto.longitude}&current=relative_humidity_2m,temperature_2m,wind_speed_10m,surface_pressure`;
+
+    const weatherRes = await fetch(weatherUrl);
+    const pogoda = await weatherRes.json();
+
+    pokaz(miasto, pogoda);
 }
 
 function card(title, img, value) {
