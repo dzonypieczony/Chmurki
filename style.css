@@ -89,43 +89,6 @@ footer{
 
 }
 
-/* .temperatura > h2{
-    display: flex;
-    grid-area: tytul;
-    font-size: 2.5em;
-    justify-content: center;
-    align-items: center;
-}
-.temperatura > p{
-    display: flex;
-    grid-area: wartosc;
-    font-size: 3.5em;
-    justify-content: right;
-    align-items: center;
-}
-.temperatura > img{
-    display: flex;
-    grid-area: obraz;
-    justify-content: left;
-    align-items: center;
-}
-
-.temperatura{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    grid-template-areas:
-        "tytul tytul"
-        "wartosc obraz";
-    overflow-wrap: break-word;
-    min-width: 0;
-    background-color: whitesmoke;
-    border: thin blue solid;
-    border-radius: 15px;
-    margin: 10px;
-    padding: 20px;
-} */
-
 .element_pogody > h2{
     display: flex;
     grid-area: tytul;
@@ -136,7 +99,7 @@ footer{
 .element_pogody > p{
     display: flex;
     grid-area: wartosc;
-    font-size: 2.5em;
+    font-size: 2em;
     justify-content: center;
     align-items: center;
 }
@@ -172,15 +135,15 @@ footer{
     padding: 15px;
     justify-content: center;
     align-items: center;
-    width: 30px;
+    width: 60px;
     height: min-content;
 }
 
-.powrot > a > p{
+.powrot > p{
     display: none;
 }
 
-.powrot > a > img{
+.powrot > img{
     display: flex;
     height: 30px;
 }
@@ -212,10 +175,10 @@ footer{
         width: auto;
         max-width: fit-content;
     }
-    .powrot > a > p{
+    .powrot > p{
         display: flex;
     }
-    .powrot > a > img{
+    .powrot > img{
         display: none;
     }
     .miasto_zawartosc{

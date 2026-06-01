@@ -8,53 +8,55 @@ fetch('miasta.json')
 function renderUI() {
     const strona = document.createElement('div')
     strona.classList.add('strona')
-
+    
+    const glowna_zawartosc = document.createElement('div')
+    glowna_zawartosc.classList.add('glowna_zawartosc')
+    
     const header = document.createElement('header')
+    header.id = 'header_id'
+    const naglowek_tekst = document.createElement('h1')
+    naglowek_tekst.textContent = 'Pogoda na każdy dzień'
+    header.appendChild(naglowek_tekst)
 
-    const naglowek = document.createElement('div')
-    naglowek.classList.add('naglowek_miasta')
 
-    const h1 = document.createElement('h1')
-    h1.textContent = 'Pogoda na każdy dzień'
+    const zawartosc_miasto = document.createElement('div')
+    zawartosc_miasto.classList.add('miasto_zawartosc')
 
-    naglowek.appendChild(h1)
-    header.appendChild(naglowek)
+    
+    const wyszukiwanie_miasta = document.createElement('div')
+    wyszukiwanie_miasta.id = 'wyszukiwanie_miasta'
 
-    const main = document.createElement('div')
-    main.classList.add('miasto_zawartosc')
+    const wyszukiwanie_pole = document.createElement('input')
+    wyszukiwanie_pole.id = 'wyszukiwanie_pole'
+    wyszukiwanie_pole.type = 'text'
 
-    const search = document.createElement('div')
-    search.id = 'wyszukiwanie_miasta'
-
-    const input = document.createElement('input')
-    input.id = 'wyszukiwanie_pole'
-    input.type = 'text'
 
 // Podpowiadanie do wyszukiwania
     const datalist = document.createElement('datalist')
     datalist.id = 'miasta'
-    input.setAttribute('list', 'miasta')
+    wyszukiwanie_pole.setAttribute('list', 'miasta')
 
 
-    const button = document.createElement('button')
-    button.id = 'wyszukiwanie_przycisk'
-    button.textContent = 'Szukaj'
+    const wyszukiwanie_przycisk = document.createElement('button')
+    wyszukiwanie_przycisk.id = 'wyszukiwanie_przycisk'
+    wyszukiwanie_przycisk.textContent = 'Szukaj'
 
-    search.appendChild(input)
-    search.appendChild(button)
-    search.appendChild(datalist)
+    wyszukiwanie_miasta.appendChild(wyszukiwanie_pole)
+    wyszukiwanie_miasta.appendChild(wyszukiwanie_przycisk)
+    wyszukiwanie_miasta.appendChild(datalist)
 
     const wynik = document.createElement('div')
     wynik.id = 'wynik'
 
-    main.appendChild(search)
-    main.appendChild(wynik)
+    glowna_zawartosc.appendChild(wyszukiwanie_miasta)
+    glowna_zawartosc.appendChild(wynik)
 
     const footer = document.createElement('footer')
     footer.innerHTML = 'Przekaż 1,5% podatku na fundację <b>Pogoda dla każdego</b>'
 
+
     strona.appendChild(header)
-    strona.appendChild(main)
+    strona.appendChild(glowna_zawartosc)
     strona.appendChild(footer)
 
     body.appendChild(strona)
@@ -62,8 +64,8 @@ function renderUI() {
     document.getElementById('wyszukiwanie_przycisk')
         .addEventListener('click', szukaj)
 // Podpowiadanie do wyszukiwania
-    input.addEventListener("input", () => {
-        const tekst = input.value.toLowerCase()
+    wyszukiwanie_pole.addEventListener("input", () => {
+        const tekst = wyszukiwanie_pole.value.toLowerCase()
         if (tekst.length < 2) {
             datalist.innerHTML = ""
             return
@@ -93,8 +95,7 @@ function Temperatura(temp){
     return 'temperatura/thermometer-warmer.svg'
 }
 function Cisnienie(pressure){
-    if (pressure < 1000) return 'cisnienie/pressure-low.svg'
-    if (pressure < 1020) return 'cisnienie/star.svg'
+    if (pressure < 1013) return 'cisnienie/pressure-low.svg'
     return 'cisnienie/pressure-high.svg'
 }
 function opisPogody(code, isDay) {
@@ -149,6 +150,32 @@ function pokaz(miasto, pogoda) {
     kontener.appendChild(card('Wiatr', Wiatr(pogoda.current.wind_speed_10m), pogoda.current.wind_speed_10m + ' km/h'))
     kontener.appendChild(card('Ciśnienie', Cisnienie(pogoda.current.surface_pressure), pogoda.current.surface_pressure + ' hPa'))
 
+    
+    // naglowek miasta
+    const header = document.getElementById('header_id')
+    header.innerHTML = ''
+    const naglowek_miasta = document.createElement('div')
+    naglowek_miasta.classList.add('naglowek_miasta')
+    const powrot_kontener = document.createElement('h3')
+    powrot_kontener.classList.add('powrot')
+    const powrot_tekst = document.createElement('p')
+    powrot_tekst.innerHTML = 'Wróć na stronę główną'
+    powrot_tekst.style.color = "black"
+    const powrot_obraz = document.createElement('img')
+    powrot_obraz.src = 'misc/arrow-narrow-left.svg'
+    naglowek_miasta.appendChild(powrot_kontener)
+    powrot_kontener.appendChild(powrot_tekst)
+    powrot_kontener.appendChild(powrot_obraz)
+
+    powrot_kontener.addEventListener('click', () => {
+        body.innerHTML = ''
+        renderUI();
+    });
+
+    const naglowek_tekst = document.createElement('h1')
+    naglowek_tekst.textContent = 'Pogoda: ' + miasto.name
+    naglowek_miasta.appendChild(naglowek_tekst)
+    header.appendChild(naglowek_miasta)
 
 
     wynik.appendChild(kontener)
