@@ -29,12 +29,21 @@ function renderUI() {
     input.id = 'wyszukiwanie_pole'
     input.type = 'text'
 
+// Podpowiadanie do wyszukiwania
+    const datalist = document.createElement('datalist')
+    datalist.id = 'miasta'
+
+    input.setAttribute('list', 'miasta')
+    search.appendChild(datalist)
+
+
     const button = document.createElement('button')
     button.id = 'wyszukiwanie_przycisk'
     button.textContent = 'Szukaj'
 
     search.appendChild(input)
     search.appendChild(button)
+    search.appendChild(datalist)
 
     const wynik = document.createElement('div')
     wynik.id = 'wynik'
@@ -53,6 +62,23 @@ function renderUI() {
 
     document.getElementById('wyszukiwanie_przycisk')
         .addEventListener('click', szukaj)
+// Podpowiadanie do wyszukiwania
+    input.addEventListener("input", () => {
+        const tekst = input.value.toLowerCase()
+
+        datalist.innerHTML = ""
+
+        if (tekst.length < 2) return
+
+        daneMiast
+            .filter(m => m.Name.toLowerCase().includes(tekst))
+            .slice(0, 10)
+            .forEach(m => {
+                const option = document.createElement("option")
+                option.value = m.Name
+                datalist.appendChild(option)
+            })
+    })
 }
 
 
