@@ -79,9 +79,9 @@ function renderUI() {
         })
     })
     }
-function szukaj() {
+async function szukaj() {
     const query = document.getElementById("wyszukiwanie_pole").value;
-    pobierzPogode(query);
+    await pobierzPogode(query);
 }
 function Wiatr(v) { //logika wiatru, temperatury  - obrazki - itd
     if (v < 20) return 'wiatr/wind.svg'
