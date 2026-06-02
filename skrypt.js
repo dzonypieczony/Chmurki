@@ -89,7 +89,7 @@ function SzansaOpadow(chance) {
     if (chance < 10) return 'zachmurzenie_opady/clear-day.svg'
     if (chance < 30) return 'zachmurzenie_opady/partly-cloudy-day.svg'
     if (chance < 50) return 'zachmurzenie_opady/cloudy.svg'
-    return 'zachmurzenie_opady/rain-day.svg'
+    return 'zachmurzenie_opady/rain.svg'
 }
 function Wiatr(v) { //logika wiatru, temperatury  - obrazki - itd
     if (v < 20) return 'wiatr/wind.svg'
