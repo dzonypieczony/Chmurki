@@ -46,7 +46,7 @@ header{
     display: grid;
     grid-template-columns: 1fr auto;
     margin: 20px;
-    height: 3vh;
+    height: 50px;
     min-width: 0;
 }
 
@@ -119,11 +119,37 @@ footer{
         "wartosc obraz";
     overflow-wrap: break-word;
     min-width: 0;
-    background-color: whitesmoke;
+    background-color: gainsboro;
     border: thin blue solid;
     border-radius: 15px;
     margin: 10px;
     padding: 15px;
+}
+
+.dni_zawartosc {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    justify-items: center;
+}
+
+.dzien_przycisk {
+    transition: 0.5s;
+    display: flex;
+    background-color: gainsboro;
+    border: thin blue solid;
+    border-radius: 15px;
+    margin: 15px;
+    padding: 15px;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    min-width: 30px;
+    height: min-content;
+}
+
+.dzien_przycisk:hover {
+    scale: 1.2;
+    background-color: wheat;
 }
 
 .dodatkowy {
@@ -223,6 +249,12 @@ footer{
     footer{
         font-size: 2vh;
     }
+    .dni_zawartosc{
+        display: inline-flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 @media screen and (min-width: 1280px) {
@@ -240,6 +272,12 @@ footer{
     }
     .element_pogody > img{
         height: 10vw;
+    }
+    .dni_zawartosc{
+        height: 12vw;
+    }
+    .dzien_przycisk{
+        font-size: 2vw;
     }
 }
 
