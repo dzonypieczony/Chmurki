@@ -8,10 +8,10 @@ fetch('miasta.json')
 function renderUI() {
     const strona = document.createElement('div')
     strona.classList.add('strona')
-    
+
     const glowna_zawartosc = document.createElement('div')
     glowna_zawartosc.classList.add('glowna_zawartosc')
-    
+
     const header = document.createElement('header')
     header.id = 'header_id'
     const naglowek_tekst = document.createElement('h1')
@@ -22,7 +22,7 @@ function renderUI() {
     const zawartosc_miasto = document.createElement('div')
     zawartosc_miasto.classList.add('miasto_zawartosc')
 
-    
+
     const wyszukiwanie_miasta = document.createElement('div')
     wyszukiwanie_miasta.id = 'wyszukiwanie_miasta'
 
@@ -80,10 +80,16 @@ function renderUI() {
             datalist.appendChild(option)
         })
     })
-    }
+}
 async function szukaj() {
     const query = document.getElementById("wyszukiwanie_pole").value;
     await pobierzPogode(query);
+}
+function SzansaOpadow(chance) {
+    if (chance < 10) return 'zachmurzenie_opady/clear-day.svg'
+    if (chance < 30) return 'zachmurzenie_opady/partly-cloudy-day.svg'
+    if (chance < 50) return 'zachmurzenie_opady/cloudy.svg'
+    return 'zachmurzenie_opady/rain-day.svg'
 }
 function Wiatr(v) { //logika wiatru, temperatury  - obrazki - itd
     if (v < 20) return 'wiatr/wind.svg'
@@ -101,19 +107,19 @@ function Cisnienie(pressure){
 function opisPogody(code, isDay) {
 
     if (code === 0) {
-        return Boolean(isDay)
+        return isDay
             ? ["Słonecznie", "zachmurzenie_opady/clear-day.svg"]
             : ["Bezchmurna noc", "zachmurzenie_opady/clear-night.svg"]
     }
 
     if (code <= 3) {
-        return Boolean(isDay)
+        return isDay
             ? ["Pochmurno", "zachmurzenie_opady/partly-cloudy-day.svg"]
             : ["Pochmurna noc", "zachmurzenie_opady/partly-cloudy-night.svg"]
     }
 
     if (code <= 48) {
-        return Boolean(isDay)
+        return isDay
             ? ["Mgliście", "zachmurzenie_opady/overcast-day-fog.svg"]
             : ["Mglista noc", "zachmurzenie_opady/overcast-night-fog.svg"]
     }
@@ -150,7 +156,7 @@ function pokaz(miasto, pogoda) {
     kontener.appendChild(card('Wiatr', Wiatr(pogoda.current.wind_speed_10m), pogoda.current.wind_speed_10m + ' km/h'))
     kontener.appendChild(card('Ciśnienie', Cisnienie(pogoda.current.surface_pressure), pogoda.current.surface_pressure + ' hPa'))
 
-    
+
     // naglowek miasta
     const header = document.getElementById('header_id')
     header.innerHTML = ''
@@ -177,6 +183,74 @@ function pokaz(miasto, pogoda) {
     naglowek_miasta.appendChild(naglowek_tekst)
     header.appendChild(naglowek_miasta)
 
+    const dodatkowy_kontener = document.createElement('h3')
+    dodatkowy_kontener.classList.add('dodatkowy')
+    const dodatkowy_tekst = document.createElement('p')
+    dodatkowy_tekst.innerHTML = 'Dodatkowe info'
+    dodatkowy_tekst.style.color = "black"
+    naglowek_miasta.appendChild(dodatkowy_kontener)
+    dodatkowy_kontener.appendChild(dodatkowy_tekst)
+
+    dodatkowy_kontener.addEventListener('click', () => {
+        pobierzMaxPogode(miasto)
+    });
+
+    wynik.appendChild(kontener)
+}
+
+function pokazMax(miasto, pogoda) {
+
+    const wynik = document.getElementById('wynik')
+    wynik.innerHTML = ''
+
+    const kontener = document.createElement('div')
+    kontener.classList.add('miasto_zawartosc')
+
+    kontener.appendChild(card('Temperatura', Temperatura(pogoda.daily.temperature_2m_max[0]), pogoda.daily.temperature_2m_max[0] + '°C'))
+    kontener.appendChild(card('Opis Pogody', opisPogody(pogoda.daily.weather_code[0], true)[1], opisPogody(pogoda.daily.weather_code[0], true)[0]))
+
+    kontener.appendChild(card('Wiatr', Wiatr(pogoda.daily.wind_speed_10m_max[0]), pogoda.daily.wind_speed_10m_max[0] + ' km/h'))
+    kontener.appendChild(card('Szansa opadów', SzansaOpadow(pogoda.daily.precipitation_probability_max[0]), pogoda.daily.precipitation_probability_max[0] + ' %'))
+
+
+    // naglowek miasta
+    const header = document.getElementById('header_id')
+    header.innerHTML = ''
+    const naglowek_miasta = document.createElement('div')
+    naglowek_miasta.classList.add('naglowek_miasta')
+    const powrot_kontener = document.createElement('h3')
+    powrot_kontener.classList.add('powrot')
+    const powrot_tekst = document.createElement('p')
+    powrot_tekst.innerHTML = 'Wróć na stronę główną'
+    powrot_tekst.style.color = "black"
+    const powrot_obraz = document.createElement('img')
+    powrot_obraz.src = 'misc/arrow-narrow-left.svg'
+    naglowek_miasta.appendChild(powrot_kontener)
+    powrot_kontener.appendChild(powrot_tekst)
+    powrot_kontener.appendChild(powrot_obraz)
+
+    powrot_kontener.addEventListener('click', () => {
+        body.innerHTML = ''
+        renderUI();
+    });
+
+    const naglowek_tekst = document.createElement('h1')
+    naglowek_tekst.textContent = 'Maksymalne wartości dla: ' + miasto.name
+    naglowek_miasta.appendChild(naglowek_tekst)
+    header.appendChild(naglowek_miasta)
+
+    /*const dodatkowy_kontener = document.createElement('h3')
+    dodatkowy_kontener.classList.add('dodatkowy')
+    const dodatkowy_tekst = document.createElement('p')
+    dodatkowy_tekst.innerHTML = 'Dodatkowe info'
+    dodatkowy_tekst.style.color = "black"
+    naglowek_miasta.appendChild(dodatkowy_kontener)
+    dodatkowy_kontener.appendChild(dodatkowy_tekst)
+
+    dodatkowy_kontener.addEventListener('click', () => {
+        body.innerHTML = ''
+        renderUI();
+    });*/
 
     wynik.appendChild(kontener)
 }
@@ -193,12 +267,32 @@ async function pobierzPogode(query) {
 
     const miasto = geoData.results[0];
     const weatherUrl =
-        `https://api.open-meteo.com/v1/forecast?latitude=${miasto.latitude}&longitude=${miasto.longitude}&current=temperature_2m,wind_speed_10m,surface_pressure,weather_code,is_day&timezone=auto`;
+        `https://api.open-meteo.com/v1/forecast?latitude=${miasto.latitude}&longitude=${miasto.longitude}&current=temperature_2m,wind_speed_10m,surface_pressure,weather_code,is_day`;
 
     const weatherRes = await fetch(weatherUrl);
     const pogoda = await weatherRes.json();
 
     pokaz(miasto, pogoda);
+}
+
+async function pobierzMaxPogode(miasto) {
+    /*const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=1&language=pl&format=json`;
+    const geoRes = await fetch(geoUrl);
+    const geoData = await geoRes.json();
+
+    if (!geoData.results || geoData.results.length === 0) {
+        console.log("Nie znaleziono miasta");
+        return;
+    }
+
+    const miasto = geoData.results[0];*/
+    const weatherUrl =
+        `https://api.open-meteo.com/v1/forecast?latitude=${miasto.latitude}&longitude=${miasto.longitude}&daily=temperature_2m_max,wind_speed_10m_max,precipitation_probability_max,weather_code&timezone=auto`;
+
+    const weatherRes = await fetch(weatherUrl);
+    const pogoda = await weatherRes.json();
+
+    pokazMax(miasto, pogoda);
 }
 
 function card(title, img, value) {
