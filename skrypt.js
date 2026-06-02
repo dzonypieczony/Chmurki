@@ -193,7 +193,7 @@ async function pobierzPogode(query) {
 
     const miasto = geoData.results[0];
     const weatherUrl =
-        `https://api.open-meteo.com/v1/forecast?latitude=${miasto.latitude}&longitude=${miasto.longitude}&current=temperature_2m,wind_speed_10m,surface_pressure,weather_code,is_day`;
+        `https://api.open-meteo.com/v1/forecast?latitude=${miasto.latitude}&longitude=${miasto.longitude}&current=temperature_2m,wind_speed_10m,surface_pressure,weather_code,is_day&timezone=auto`;
 
     const weatherRes = await fetch(weatherUrl);
     const pogoda = await weatherRes.json();
