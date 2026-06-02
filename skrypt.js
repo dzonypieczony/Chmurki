@@ -101,19 +101,19 @@ function Cisnienie(pressure){
 function opisPogody(code, isDay) {
 
     if (code === 0) {
-        return isDay
+        return Boolean(isDay)
             ? ["Słonecznie", "zachmurzenie_opady/clear-day.svg"]
             : ["Bezchmurna noc", "zachmurzenie_opady/clear-night.svg"]
     }
 
     if (code <= 3) {
-        return isDay
+        return Boolean(isDay)
             ? ["Pochmurno", "zachmurzenie_opady/partly-cloudy-day.svg"]
             : ["Pochmurna noc", "zachmurzenie_opady/partly-cloudy-night.svg"]
     }
 
     if (code <= 48) {
-        return isDay
+        return Boolean(isDay)
             ? ["Mgliście", "zachmurzenie_opady/overcast-day-fog.svg"]
             : ["Mglista noc", "zachmurzenie_opady/overcast-night-fog.svg"]
     }
