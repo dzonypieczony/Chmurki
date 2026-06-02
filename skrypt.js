@@ -307,7 +307,7 @@ async function pobierzMaxPogode(miasto) {
 
     const miasto = geoData.results[0];*/
     const weatherUrl =
-        `https://api.open-meteo.com/v1/forecast?latitude=${miasto.latitude}&longitude=${miasto.longitude}&daily=temperature_2m_max,wind_speed_10m_max,precipitation_probability_max,weather_code&timezone=auto`;
+        `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(miasto.latitude)}&longitude=${encodeURIComponent(miasto.longitude)}&daily=temperature_2m_max,wind_speed_10m_max,precipitation_probability_max,weather_code&timezone=auto`;
 
     const weatherRes = await fetch(weatherUrl);
     const pogoda = await weatherRes.json();
