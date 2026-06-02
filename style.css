@@ -126,6 +126,29 @@ footer{
     padding: 15px;
 }
 
+.dodatkowy {
+    display: inline-flex;
+    background-color: whitesmoke;
+    border: thin blue solid;
+    border-radius: 15px;
+    margin: 15px;
+    padding: 15px;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: min-content;
+    justify-self: right;
+}
+
+.dodatkowy > p{
+    display: none;
+}
+
+.dodatkowy > img{
+    display: flex;
+    height: 30px;
+}
+
 .powrot{
     display: inline-flex;
     background-color: whitesmoke;
@@ -170,6 +193,16 @@ footer{
     .miasto{
         height: 150px;
         font-size: 1.8vh;
+    }
+    .dodatkowy{
+        width: auto;
+        max-width: fit-content;
+    }
+    .dodatkowy > p{
+        display: flex;
+    }
+    .dodatkowy > img{
+        display: none;
     }
     .powrot{
         width: auto;

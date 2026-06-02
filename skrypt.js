@@ -85,6 +85,7 @@ async function szukaj() {
     const query = document.getElementById("wyszukiwanie_pole").value;
     await pobierzPogode(query);
 }
+
 function SzansaOpadow(chance) {
     if (chance < 10) return 'zachmurzenie_opady/clear-day.svg'
     if (chance < 30) return 'zachmurzenie_opady/partly-cloudy-day.svg'
@@ -188,8 +189,11 @@ function pokaz(miasto, pogoda) {
     const dodatkowy_tekst = document.createElement('p')
     dodatkowy_tekst.innerHTML = 'Dodatkowe info'
     dodatkowy_tekst.style.color = "black"
+    const dodatkowy_obraz = document.createElement('img')
+    dodatkowy_obraz.src = 'misc/plus_symbol.svg'
     naglowek_miasta.appendChild(dodatkowy_kontener)
     dodatkowy_kontener.appendChild(dodatkowy_tekst)
+    dodatkowy_kontener.appendChild(dodatkowy_obraz)
 
     dodatkowy_kontener.addEventListener('click', () => {
         pobierzMaxPogode(miasto)
@@ -234,10 +238,26 @@ function pokazMax(miasto, pogoda) {
         renderUI();
     });
 
+    
     const naglowek_tekst = document.createElement('h1')
     naglowek_tekst.textContent = 'Maksymalne wartości dla: ' + miasto.name
     naglowek_miasta.appendChild(naglowek_tekst)
     header.appendChild(naglowek_miasta)
+
+    const normalny_rozklad_kontener = document.createElement('h3')
+    normalny_rozklad_kontener.classList.add('dodatkowy')
+    const normalny_rozklad_tekst = document.createElement('p')
+    normalny_rozklad_tekst.innerHTML = 'Zwykłe info'
+    normalny_rozklad_tekst.style.color = "black"
+    const normalny_rozklad_obraz = document.createElement('img')
+    normalny_rozklad_obraz.src = 'misc/plus_symbol.svg'
+    naglowek_miasta.appendChild(normalny_rozklad_kontener)
+    normalny_rozklad_kontener.appendChild(normalny_rozklad_tekst)
+    normalny_rozklad_kontener.appendChild(normalny_rozklad_obraz)
+
+    normalny_rozklad_kontener.addEventListener('click', () => {
+        szukaj();
+    });
 
     /*const dodatkowy_kontener = document.createElement('h3')
     dodatkowy_kontener.classList.add('dodatkowy')
