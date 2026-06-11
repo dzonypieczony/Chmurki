@@ -15,9 +15,24 @@ function renderUI() {
     // domyślny nagłówek
     const header = document.createElement('header')
     header.id = 'header_id'
+
+    const naglowek_miasta = document.createElement('div')
+    naglowek_miasta.classList.add('naglowek_miasta')
+
+    const puste_lewe = document.createElement('div')
+    naglowek_miasta.appendChild(puste_lewe)
+
     const naglowek_tekst = document.createElement('h1')
     naglowek_tekst.textContent = 'Pogoda na każdy dzień'
-    header.appendChild(naglowek_tekst)
+    naglowek_miasta.appendChild(naglowek_tekst)
+
+    const prawe_przyciski = document.createElement('div')
+    prawe_przyciski.classList.add('prawe_przyciski')
+    stworzPrzyciskKontakt(prawe_przyciski)
+
+    naglowek_miasta.appendChild(prawe_przyciski)
+    header.appendChild(naglowek_miasta)
+    //
     //
 
     // wyszukiwanie miasta
@@ -364,25 +379,169 @@ function stworzPrzyciskDodatkowegoInfo(miasto, naglowek_miasta) {
     });
 }
 
+function stworzPrzyciskKontakt(rodzic) {
+    const kontakt_kontener = document.createElement('h3')
+    kontakt_kontener.classList.add('dodatkowy')
+    kontakt_kontener.classList.add('klikalne')
+
+    const kontakt_tekst = document.createElement('p')
+    kontakt_tekst.textContent = 'Kontakt'
+
+    const kontakt_obraz = document.createElement('img')
+    kontakt_obraz.src = 'misc/email-1-svgrepo-com.svg'
+
+    kontakt_kontener.appendChild(kontakt_tekst)
+    kontakt_kontener.appendChild(kontakt_obraz)
+
+    kontakt_kontener.addEventListener('click', () => {
+        pokazFormularzKontaktowy();
+    });
+
+    rodzic.appendChild(kontakt_kontener)
+}
+
 function zmienNaNaglowekMiasta(miasto, czy_max) {
     const header = document.getElementById('header_id')
     header.innerHTML = ''
 
     const naglowek_miasta = document.createElement('div')
     naglowek_miasta.classList.add('naglowek_miasta')
-    
+
     stworzPrzyciskPowrotu(naglowek_miasta)
 
     const naglowek_tekst = document.createElement('h1')
     naglowek_miasta.appendChild(naglowek_tekst)
-    header.appendChild(naglowek_miasta)
+
+    const prawe_przyciski = document.createElement('div')
+    prawe_przyciski.classList.add('prawe_przyciski')
+
+    stworzPrzyciskKontakt(prawe_przyciski)
 
     if (czy_max) {
         naglowek_tekst.textContent = 'Maksymalne wartości dla: ' + miasto.name
-        stworzPrzyciskZwyklegoInfo(naglowek_miasta)
+        stworzPrzyciskZwyklegoInfo(prawe_przyciski)
     }
-    else{
+    else {
         naglowek_tekst.textContent = 'Pogoda: ' + miasto.name
-        stworzPrzyciskDodatkowegoInfo(miasto, naglowek_miasta)
+        stworzPrzyciskDodatkowegoInfo(miasto, prawe_przyciski)
     }
+
+    naglowek_miasta.appendChild(prawe_przyciski)
+    header.appendChild(naglowek_miasta)
+}
+function pokazFormularzKontaktowy() {
+    const header = document.getElementById('header_id') // zmiana naglowka
+    header.innerHTML = ''
+
+    const naglowek_miasta = document.createElement('div')
+    naglowek_miasta.classList.add('naglowek_miasta')
+
+    stworzPrzyciskPowrotu(naglowek_miasta)
+
+    const naglowek_tekst = document.createElement('h1')
+    naglowek_tekst.textContent = 'Skontaktuj się z nami'
+    naglowek_miasta.appendChild(naglowek_tekst)
+
+    const puste_prawe = document.createElement('div')
+    naglowek_miasta.appendChild(puste_prawe)
+
+    header.appendChild(naglowek_miasta)
+
+    const glowna_zawartosc = document.getElementById('glowna_zawartosc') // czyszczenie zawartosci glownej
+    glowna_zawartosc.innerHTML = ''
+
+
+    const form_kontener = document.createElement('article') // budowa kontenera z formularzem
+    form_kontener.classList.add('ladny_kontener')
+    form_kontener.classList.add('formularz_kontener')
+
+    const form = document.createElement('form') // stworzenie formularza
+
+    const kontener_imie = stworzPoleFormularza('Imię i nazwisko:', 'text', 'Podaj swoje dane', true)
+    const input_imie = kontener_imie.querySelector('input')
+    form.appendChild(kontener_imie)
+
+    form.appendChild(stworzPoleFormularza('Adres e-mail:', 'email', 'twoj@email.pl', true))
+    form.appendChild(stworzPoleFormularza('Twoje miasto:', 'text', 'Z jakiego miasta jesteś?', false))
+
+    const label_rodzaj = document.createElement('label')
+    label_rodzaj.textContent = 'Czego dotyczy wiadomość?'
+    const select_rodzaj = document.createElement('select')
+
+    const opcje = ['Błąd w prognozie', 'Propozycja współpracy', 'Zgłoszenie usterki', 'Inne']
+    opcje.forEach(opcja_tekst => {
+        const opcja = document.createElement('option')
+        opcja.value = opcja_tekst
+        opcja.textContent = opcja_tekst
+        select_rodzaj.appendChild(opcja)
+    })
+    label_rodzaj.appendChild(select_rodzaj)
+    form.appendChild(label_rodzaj)
+
+    const label_wiadomosc = document.createElement('label')
+    label_wiadomosc.textContent = 'Treść wiadomości:'
+    const textarea = document.createElement('textarea')
+    textarea.placeholder = 'Napisz do nas...'
+    textarea.rows = 6
+    textarea.required = true
+    label_wiadomosc.appendChild(textarea)
+    form.appendChild(label_wiadomosc)
+
+    const label_zgoda = document.createElement('label')
+    label_zgoda.classList.add('checkbox_etykieta')
+    const checkbox_zgoda = document.createElement('input')
+    checkbox_zgoda.type = 'checkbox'
+    checkbox_zgoda.required = true
+    const tekst_zgody = document.createElement('span')
+    tekst_zgody.textContent = 'Akceptuję regulamin i wyrażam zgodę na przetwarzanie danych osobowych.'
+
+    label_zgoda.appendChild(checkbox_zgoda)
+    label_zgoda.appendChild(tekst_zgody)
+    form.appendChild(label_zgoda)
+
+    const submit_btn = document.createElement('button')
+    submit_btn.type = 'submit'
+    submit_btn.textContent = 'Wyślij wiadomość'
+    submit_btn.classList.add('dzien_przycisk')
+    submit_btn.classList.add('klikalne')
+    submit_btn.classList.add('przycisk_wyslij')
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault() // pierwszo sprawdza pola, stopuje
+
+        const wartosc_imie = input_imie.value.trim()
+        const wartosc_wiadomosc = textarea.value.trim()
+
+        if (wartosc_imie.length < 3) { // walidacja dlugosci
+            alert('Imię i nazwisko jest za krótkie. Podaj co najmniej 3 znaki.') // walidacja
+            return
+        }
+        if (wartosc_wiadomosc.length < 10) {
+            alert('Twoja wiadomość jest za krótka. Prosimy o wpisanie co najmniej 10 znaków.') // walidacja
+            return
+        }
+        alert('Wiadomość została wysłana!')
+
+        body.innerHTML = ''
+        renderUI()
+    })
+
+    form.appendChild(submit_btn)
+    form_kontener.appendChild(form)
+    glowna_zawartosc.appendChild(form_kontener)
+}
+
+function stworzPoleFormularza(etykieta, typ, placeholder, czy_wymagane) {
+    const label = document.createElement('label')
+    label.textContent = etykieta
+
+    const input = document.createElement('input')
+    input.type = typ
+    input.placeholder = placeholder
+    if (czy_wymagane) {
+        input.required = true
+    }
+
+    label.appendChild(input)
+    return label
 }

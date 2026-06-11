@@ -1,3 +1,8 @@
+.prawe_przyciski {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
 body{
     display: flex;
     flex-direction: column;
@@ -138,12 +143,66 @@ footer{
     justify-content: center;
 }
 
-.dni_zawartosc {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    justify-items: center;
+.formularz_kontener form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 100%;
+}
+.formularz_kontener label {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    font-size: 1.2em;
+    font-weight: bold;
+    gap: 8px;
 }
 
+
+.formularz_kontener input[type="text"],
+.formularz_kontener input[type="email"],
+.formularz_kontener textarea,
+.formularz_kontener select {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1em;
+    padding: 12px;
+    border: 2px solid navy;
+    border-radius: 10px;
+    background-color: whitesmoke;
+    font-family: inherit;
+}
+
+.formularz_kontener input:focus,
+.formularz_kontener textarea:focus,
+.formularz_kontener select:focus {
+    outline: none;
+    background-color: white;
+    border-color: blue;
+}
+
+.formularz_kontener .checkbox_etykieta {
+    flex-direction: row;
+    align-items: center;
+    font-size: 1.1em;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.formularz_kontener .checkbox_etykieta input[type="checkbox"] {
+    width: 25px;
+    height: 25px;
+    margin: 0 15px 0 0;
+    cursor: pointer;
+}
+
+.przycisk_wyslij {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 10px 0 0 0;
+    font-size: 1.2em;
+    cursor: pointer;
+}
 .dzien_przycisk {
     display: flex;
     background-color: gainsboro;
