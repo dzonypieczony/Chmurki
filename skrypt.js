@@ -307,10 +307,10 @@ function zaladujWiecejDni(miasto, czy_max) {
     const wynik = document.getElementById('wynik')
     const dni_kontener = document.getElementById('dni_kontener')
     const ile_dni_juz_jest = dni_kontener.querySelectorAll("article").length
-    // api niekomercyjnie daje dostęp do max 16 dni prognozy
-    if (ile_dni_juz_jest < 16) {
+    // api niekomercyjnie daje dostęp do max 15 dni prognozy
+    if (ile_dni_juz_jest < 15) {
         for (let i=ile_dni_juz_jest; i<ile_dni_juz_jest+9; i++) {
-            if (i < 16) {
+            if (i < 15) {
                 dni_kontener.appendChild(dzienPrzycisk(miasto, i, czy_max))
             }
         }
@@ -426,25 +426,38 @@ function zmienNaNaglowekMiasta(miasto, czy_max) {
 
     stworzPrzyciskPowrotu(naglowek_miasta)
 
+    // const naglowek_tekst = document.createElement('h1')
+    // naglowek_miasta.appendChild(naglowek_tekst)
+
     const naglowek_tekst = document.createElement('h1')
     naglowek_miasta.appendChild(naglowek_tekst)
-
-    const prawe_przyciski = document.createElement('div')
-    prawe_przyciski.classList.add('prawe_przyciski')
-
-    stworzPrzyciskKontakt(prawe_przyciski)
+    header.appendChild(naglowek_miasta)
 
     if (czy_max) {
         naglowek_tekst.textContent = 'Maksymalne wartości dla: ' + miasto.name
-        stworzPrzyciskZwyklegoInfo(prawe_przyciski)
+        stworzPrzyciskZwyklegoInfo(naglowek_miasta)
     }
-    else {
+    else{
         naglowek_tekst.textContent = 'Pogoda: ' + miasto.name
-        stworzPrzyciskDodatkowegoInfo(miasto, prawe_przyciski)
+        stworzPrzyciskDodatkowegoInfo(miasto, naglowek_miasta)
     }
 
-    naglowek_miasta.appendChild(prawe_przyciski)
-    header.appendChild(naglowek_miasta)
+    // const prawe_przyciski = document.createElement('div')
+    // prawe_przyciski.classList.add('prawe_przyciski')
+    //
+    // stworzPrzyciskKontakt(prawe_przyciski)
+    //
+    // if (czy_max) {
+    //     naglowek_tekst.textContent = 'Maksymalne wartości dla: ' + miasto.name
+    //     stworzPrzyciskZwyklegoInfo(prawe_przyciski)
+    // }
+    // else {
+    //     naglowek_tekst.textContent = 'Pogoda: ' + miasto.name
+    //     stworzPrzyciskDodatkowegoInfo(miasto, prawe_przyciski)
+    // }
+    //
+    // naglowek_miasta.appendChild(prawe_przyciski)
+    // header.appendChild(naglowek_miasta)
 }
 function pokazFormularzKontaktowy() {
     const header = document.getElementById('header_id') // zmiana naglowka
@@ -524,7 +537,7 @@ function pokazFormularzKontaktowy() {
     submit_btn.classList.add('przycisk_wyslij')
 
     form.addEventListener('submit', (e) => {
-        e.preventDefault() // pierwszo sprawdza pola, stopuje
+        e.preventDefault() // pierwszo sprawdza pola, stopuje reload strony przez klikniecie submita
 
         const wartosc_imie = input_imie.value.trim()
         const wartosc_wiadomosc = textarea.value.trim()

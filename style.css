@@ -142,7 +142,11 @@ footer{
     padding: 15px;
     justify-content: center;
 }
-
+.dni_zawartosc {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    justify-items: center;
+}
 .formularz_kontener form {
     display: flex;
     flex-direction: column;
