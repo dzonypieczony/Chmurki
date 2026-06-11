@@ -1,9 +1,14 @@
 const body = document.body
 let daneMiast = [] // Branie danych miast do podpowiadania
+
 fetch('miasta.json')
-    .then(r => r.json())
+    .then(r => {
+        if (!r.ok) throw new Error('Nie udało się załadować bazy miast'); // Wyłapuje ewentualne błędy kiedy nie moze zaladowac miast
+        return r.json();
+    })
     .then(dane => daneMiast = dane)
-    .then(() => renderUI())
+    .catch(error => console.error("Błąd ładowania miast:", error))
+    .finally(() => renderUI()) // Na koncu otwiera strone
 
 function renderUI() {
     const strona = document.createElement('div')
@@ -30,10 +35,8 @@ function renderUI() {
     prawe_przyciski.classList.add('prawe_przyciski')
     stworzPrzyciskKontakt(prawe_przyciski)
 
-    naglowek_miasta.appendChild(prawe_przyciski)
+    naglowek_miasta.appendChild(prawe_przyciski) // prawe przyciski - kontakt i np dodatkowe info
     header.appendChild(naglowek_miasta)
-    //
-    //
 
     // wyszukiwanie miasta
     const wyszukiwanie_miasta = document.createElement('div')
@@ -73,8 +76,7 @@ function renderUI() {
 
     body.appendChild(strona)
 
-    document.getElementById('wyszukiwanie_przycisk')
-        .addEventListener('click', szukaj)
+    document.getElementById('wyszukiwanie_przycisk').addEventListener('click', szukaj)
     // Podpowiadanie do wyszukiwania
     wyszukiwanie_pole.addEventListener("input", () => {
         const tekst = wyszukiwanie_pole.value.toLowerCase()
@@ -188,34 +190,49 @@ function pokazKonkretnyDzien(miasto, pogoda, dzien, czy_max) {
 }
 
 async function pobierzPogodeDoKonkretnegoDnia(query, dzien) {
-    const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=1&language=pl&format=json`;
-    const geoRes = await fetch(geoUrl);
-    const geoData = await geoRes.json();
+    try {
+        const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=1&language=pl&format=json`;
+        const geoRes = await fetch(geoUrl);
 
-    if (!geoData.results || geoData.results.length === 0) {
-        console.log("Nie znaleziono miasta");
-        return;
+        if (!geoRes.ok) throw new Error('Błąd połączenia z serwerem geokodowania');
+        const geoData = await geoRes.json();
+
+        if (!geoData.results || geoData.results.length === 0) {
+            alert("Nie znaleziono takiego miasta. Spróbuj wpisać inną nazwę.");
+            return;
+        }
+
+        const liczba_godzin = 24 * dzien + 1;
+        const miasto = geoData.results[0];
+        const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(miasto.latitude)}&longitude=${encodeURIComponent(miasto.longitude)}&hourly=temperature_2m,wind_speed_10m,surface_pressure,weather_code,is_day&forecast_days=${dzien}&forecast_hours=${liczba_godzin}`;
+
+        const weatherRes = await fetch(weatherUrl);
+        if (!weatherRes.ok) throw new Error('Błąd pobierania danych pogodowych z serwera');
+
+        const pogoda = await weatherRes.json();
+        pokazKonkretnyDzien(miasto, pogoda, dzien, false);
+
+    } catch (error) {
+        console.error("Wystąpił błąd podczas szukania pogody:", error);
+        alert("Ups! Wystąpił błąd podczas pobierania pogody. Sprawdź połączenie z internetem i spróbuj ponownie.");
     }
-
-    const liczba_godzin = 24 * dzien + 1;
-    const miasto = geoData.results[0];
-    const weatherUrl =
-        `https://api.open-meteo.com/v1/forecast?latitude=${miasto.latitude}&longitude=${miasto.longitude}&hourly=temperature_2m,wind_speed_10m,surface_pressure,weather_code,is_day&forecast_days=${dzien}&forecast_hours=${liczba_godzin}`;
-
-    const weatherRes = await fetch(weatherUrl);
-    const pogoda = await weatherRes.json();
-    
-    pokazKonkretnyDzien(miasto, pogoda, dzien, false);
 }
 
 async function pobierzPogodeDoKonkretnegoDniaMax(miasto, dzien) {
-    const weatherUrl =
-        `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(miasto.latitude)}&longitude=${encodeURIComponent(miasto.longitude)}&daily=temperature_2m_max,wind_speed_10m_max,precipitation_probability_max,weather_code&forecast_days=${dzien+1}&timezone=auto`;
+    try {
+        const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(miasto.latitude)}&longitude=${encodeURIComponent(miasto.longitude)}&daily=temperature_2m_max,wind_speed_10m_max,precipitation_probability_max,weather_code&forecast_days=${dzien+1}&timezone=auto`;
 
-    const weatherRes = await fetch(weatherUrl);
-    const pogoda = await weatherRes.json();
+        const weatherRes = await fetch(weatherUrl);
 
-    pokazKonkretnyDzien(miasto, pogoda, dzien, true);
+        if (!weatherRes.ok) throw new Error('Błąd pobierania danych z serwera Open-Meteo');
+
+        const pogoda = await weatherRes.json();
+        pokazKonkretnyDzien(miasto, pogoda, dzien, true);
+
+    } catch (error) {
+        console.error("Wystąpił błąd przy pobieraniu maksymalnych wartości:", error);
+        alert("Nie udało się załadować rozszerzonych informacji o pogodzie. Spróbuj ponownie za chwilę.");
+    }
 }
 
 
