@@ -20,23 +20,14 @@ function renderUI() {
     // domyślny nagłówek
     const header = document.createElement('header')
     header.id = 'header_id'
-
-    const naglowek_miasta = document.createElement('div')
-    naglowek_miasta.classList.add('naglowek_miasta')
-
-    const puste_lewe = document.createElement('div')
-    naglowek_miasta.appendChild(puste_lewe)
-
+    const naglowek_strony_glownej = document.createElement('div')
+    naglowek_strony_glownej.id = "naglowek_strony_glownej"
     const naglowek_tekst = document.createElement('h1')
     naglowek_tekst.textContent = 'Pogoda na każdy dzień'
-    naglowek_miasta.appendChild(naglowek_tekst)
-
-    const prawe_przyciski = document.createElement('div')
-    prawe_przyciski.classList.add('prawe_przyciski')
-    stworzPrzyciskKontakt(prawe_przyciski)
-
-    naglowek_miasta.appendChild(prawe_przyciski) // prawe przyciski - kontakt i np dodatkowe info
-    header.appendChild(naglowek_miasta)
+    naglowek_strony_glownej.appendChild(naglowek_tekst)
+    stworzPrzyciskKontakt(naglowek_strony_glownej)
+    header.appendChild(naglowek_strony_glownej)
+    //
 
     // wyszukiwanie miasta
     const wyszukiwanie_miasta = document.createElement('div')
@@ -426,9 +417,6 @@ function zmienNaNaglowekMiasta(miasto, czy_max) {
 
     stworzPrzyciskPowrotu(naglowek_miasta)
 
-    // const naglowek_tekst = document.createElement('h1')
-    // naglowek_miasta.appendChild(naglowek_tekst)
-
     const naglowek_tekst = document.createElement('h1')
     naglowek_miasta.appendChild(naglowek_tekst)
     header.appendChild(naglowek_miasta)
@@ -441,23 +429,6 @@ function zmienNaNaglowekMiasta(miasto, czy_max) {
         naglowek_tekst.textContent = 'Pogoda: ' + miasto.name
         stworzPrzyciskDodatkowegoInfo(miasto, naglowek_miasta)
     }
-
-    // const prawe_przyciski = document.createElement('div')
-    // prawe_przyciski.classList.add('prawe_przyciski')
-    //
-    // stworzPrzyciskKontakt(prawe_przyciski)
-    //
-    // if (czy_max) {
-    //     naglowek_tekst.textContent = 'Maksymalne wartości dla: ' + miasto.name
-    //     stworzPrzyciskZwyklegoInfo(prawe_przyciski)
-    // }
-    // else {
-    //     naglowek_tekst.textContent = 'Pogoda: ' + miasto.name
-    //     stworzPrzyciskDodatkowegoInfo(miasto, prawe_przyciski)
-    // }
-    //
-    // naglowek_miasta.appendChild(prawe_przyciski)
-    // header.appendChild(naglowek_miasta)
 }
 function pokazFormularzKontaktowy() {
     const header = document.getElementById('header_id') // zmiana naglowka
