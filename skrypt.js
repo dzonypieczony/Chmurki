@@ -472,7 +472,6 @@ function pokazFormularzKontaktowy() {
     const opcje = ['Błąd w prognozie', 'Propozycja współpracy', 'Zgłoszenie usterki', 'Inne']
     opcje.forEach(opcja_tekst => {
         const opcja = document.createElement('option')
-        opcja.value = opcja_tekst
         opcja.textContent = opcja_tekst
         select_rodzaj.appendChild(opcja)
     })
@@ -507,8 +506,8 @@ function pokazFormularzKontaktowy() {
     submit_btn.classList.add('klikalne')
     submit_btn.classList.add('przycisk_wyslij')
 
-    form.addEventListener('submit', (e) => {
-        e.preventDefault() // pierwszo sprawdza pola, stopuje reload strony przez klikniecie submita
+    form.addEventListener('submit', (event) => {
+        event.preventDefault() // pierwszo sprawdza pola, stopuje reload strony przez klikniecie submita
 
         const wartosc_imie = input_imie.value.trim()
         const wartosc_wiadomosc = textarea.value.trim()
