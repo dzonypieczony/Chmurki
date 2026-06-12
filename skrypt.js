@@ -21,7 +21,10 @@ function renderUI() {
     const header = document.createElement('header')
     header.id = 'header_id'
     const naglowek_strony_glownej = document.createElement('div')
-    naglowek_strony_glownej.id = "naglowek_strony_glownej"
+    // naglowek_strony_glownej.id = "naglowek_strony_glownej"
+    naglowek_strony_glownej.classList.add("naglowek_ogolny")
+    const puste_lewe = document.createElement('div')
+    naglowek_strony_glownej.appendChild(puste_lewe)
     const naglowek_tekst = document.createElement('h1')
     naglowek_tekst.textContent = 'Pogoda na każdy dzień'
     naglowek_strony_glownej.appendChild(naglowek_tekst)
@@ -299,15 +302,16 @@ function zaladujWiecejDni(miasto, czy_max) {
     const dni_kontener = document.getElementById('dni_kontener')
     const ile_dni_juz_jest = dni_kontener.querySelectorAll("article").length
     // api niekomercyjnie daje dostęp do max 15 dni prognozy
+    if (!(ile_dni_juz_jest < 15)) {
+            alert("Wymagana zbyt duża liczba dni");
+            return;
+        }
     if (ile_dni_juz_jest < 15) {
         for (let i=ile_dni_juz_jest; i<ile_dni_juz_jest+9; i++) {
             if (i < 15) {
                 dni_kontener.appendChild(dzienPrzycisk(miasto, i, czy_max))
             }
         }
-    }
-    else {
-        console.log('Wymagana zbyt duża liczba dni')
     }
 }
 
@@ -413,7 +417,7 @@ function zmienNaNaglowekMiasta(miasto, czy_max) {
     header.innerHTML = ''
 
     const naglowek_miasta = document.createElement('div')
-    naglowek_miasta.classList.add('naglowek_miasta')
+    naglowek_miasta.classList.add('naglowek_ogolny')
 
     stworzPrzyciskPowrotu(naglowek_miasta)
 
@@ -435,7 +439,7 @@ function pokazFormularzKontaktowy() {
     header.innerHTML = ''
 
     const naglowek_miasta = document.createElement('div')
-    naglowek_miasta.classList.add('naglowek_miasta')
+    naglowek_miasta.classList.add('naglowek_ogolny')
 
     stworzPrzyciskPowrotu(naglowek_miasta)
 

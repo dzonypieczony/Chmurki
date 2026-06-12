@@ -1,8 +1,4 @@
-.prawe_przyciski {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
+
 body{
     display: flex;
     flex-direction: column;
@@ -17,12 +13,6 @@ body{
     display: grid;
     grid-template-rows: auto 1fr auto;
     grid-template-columns: minmax(0, 1fr);
-}
-
-#naglowek_strony_glownej{
-    display: grid;
-    grid-template-columns: auto 1fr;
-    font-size: 0.8em;
 }
 
 a{
@@ -47,7 +37,7 @@ header{
     font-size: 4vw;
 }
 
-.naglowek_miasta{
+.naglowek_ogolny{
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     font-size: 0.8em;
@@ -296,7 +286,7 @@ footer{
     header{
         font-size: 2vh;
     }
-    .naglowek_miasta{
+    .naglowek_ogolny{
         font-size: 2vh;
     }
     #wyszukiwanie_miasta{
